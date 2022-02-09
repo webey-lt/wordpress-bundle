@@ -139,12 +139,25 @@ class WPSEOProvider
 	 */
 	public static function sitemapToRobots( $output ) {
 
-		$options = get_option( 'wpseo_xml' );
+		$options = get_option( 'wpseo' );
 
-		if ( class_exists( 'WPSEO_Sitemaps' ) && $options['enablexmlsitemap'] == true ) {
+        if ( class_exists( 'WPSEO_Sitemaps' ) && $options['enable_xml_sitemap'] == true ) {
 
-			$homeURL = get_home_url();
-			$output .= "Sitemap: $homeURL/sitemap_index.xml\n";
+            if( is_multisite() ){
+
+                $sites = get_sites(['public'=>1]);
+
+                foreach ($sites as $site){
+
+                    $base_url = get_home_url($site->blog_id);
+                    $output .= "Sitemap: $base_url/sitemap_index.xml\n";
+                }
+            }
+            else{
+
+                $base_url = get_home_url();
+                $output .= "Sitemap: $base_url/sitemap_index.xml\n";
+            }
 		}
 
 		return $output;
@@ -170,7 +183,7 @@ class WPSEOProvider
                 add_filter( 'wpseo_debug_markers', '__return_false' );
                 add_filter('wpseo_canonical', [$this, 'filterCanonical']);
 
-				add_filter('wp-bundle/make_link_relative', function($make){
+            add_filter('wp-bundle/make_post_link_relative', function($make){
 
 					global $wp_query;
 					return $make && empty($wp_query->query_vars["sitemap"]) && empty($wp_query->query_vars["yoast-sitemap-xsl"]);
