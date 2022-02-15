@@ -160,30 +160,17 @@ class Permastruct{
 		if( isset($this->wp_rewrite->author_structure) )
 			$this->addRoute('author', $this->wp_rewrite->author_structure);
 
-		$translated_search_slug = get_option( 'search_rewrite_slug' );
-		$search_post_type_structure = $search_structure = false;
+        if( isset($this->wp_rewrite->search_structure) ){
 
-		if( !empty($translated_search_slug) ){
+            $translated_search_slug = get_option( 'search_rewrite_slug' );
 
-			$search_structure = str_replace($this->wp_rewrite->search_base.'/', $translated_search_slug.'/', $this->wp_rewrite->search_structure);
+            if( !empty($translated_search_slug) )
+                $search_structure = str_replace($this->wp_rewrite->search_base.'/', $translated_search_slug.'/', $this->wp_rewrite->search_structure);
+            else
+                $search_structure = $this->wp_rewrite->search_structure;
 
-			if( isset($this->wp_rewrite->search_post_type_structure) )
-				$search_post_type_structure = str_replace($this->wp_rewrite->search_base.'/', $translated_search_slug.'/', $this->wp_rewrite->search_post_type_structure);
-		}
-		else{
-
-			if( isset($this->wp_rewrite->search_structure) )
-				$search_structure = $this->wp_rewrite->search_structure;
-
-			if( isset($this->wp_rewrite->search_post_type_structure) )
-				$search_post_type_structure = $this->wp_rewrite->search_post_type_structure;
-		}
-
-		if( $search_structure )
-			$this->addRoute('search', $search_structure, [], true);
-
-		if( $search_post_type_structure )
-			$this->addRoute('search_post_type', $search_post_type_structure, [], true);
+            $this->addRoute('search', $search_structure, [], true);
+        }
 
 		if( isset($this->wp_rewrite->page_structure) )
 			$this->addRoute('page', $this->wp_rewrite->page_structure, ['pagename'=>'[a-zA-Z0-9]{2}[^/].*']);
