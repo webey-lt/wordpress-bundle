@@ -160,19 +160,10 @@ class Permastruct{
 		if( isset($this->wp_rewrite->author_structure) )
 			$this->addRoute('author', $this->wp_rewrite->author_structure);
 
-        if( isset($this->wp_rewrite->search_structure) ){
+        if( isset($this->wp_rewrite->search_structure) )
+            $this->addRoute('search', $this->wp_rewrite->search_structure, [], true);
 
-            $translated_search_slug = get_option( 'search_rewrite_slug' );
-
-            if( !empty($translated_search_slug) )
-                $search_structure = str_replace($this->wp_rewrite->search_base.'/', $translated_search_slug.'/', $this->wp_rewrite->search_structure);
-            else
-                $search_structure = $this->wp_rewrite->search_structure;
-
-            $this->addRoute('search', $search_structure, [], true);
-        }
-
-		if( isset($this->wp_rewrite->page_structure) )
+        if( isset($this->wp_rewrite->page_structure) )
 			$this->addRoute('page', $this->wp_rewrite->page_structure, ['pagename'=>'[a-zA-Z0-9]{2}[^/].*']);
 	}
 
