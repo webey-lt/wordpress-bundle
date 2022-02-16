@@ -159,6 +159,8 @@ class Image extends Entity
 			if( !@file_exists($metadata['src']) )
 				return false;
 
+			$metadata['filesize'] = filesize($metadata['src'])/1024;
+
             if( apply_filters('wp_make_url_relative', true) )
                 $metadata['file'] = $this->uploadDir('relative').'/'.$metadata['file'];
             else
