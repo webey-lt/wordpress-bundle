@@ -160,19 +160,10 @@ class Permastruct{
 		if( isset($this->wp_rewrite->author_structure) )
 			$this->addRoute('author', $this->wp_rewrite->author_structure);
 
-        if( isset($this->wp_rewrite->search_structure) ){
-
-            $translated_search_slug = get_option( 'search_rewrite_slug' );
-
-            if( !empty($translated_search_slug) )
-                $search_structure = str_replace($this->wp_rewrite->search_base.'/', $translated_search_slug.'/', $this->wp_rewrite->search_structure);
-            else
-                $search_structure = $this->wp_rewrite->search_structure;
-
-            $this->addRoute('search', $search_structure, [], true);
-        }
-
-		if( isset($this->wp_rewrite->page_structure) )
+        if( isset($this->wp_rewrite->search_structure) )
+            $this->addRoute('search', $this->wp_rewrite->search_structure, [], true);
+        
+        if( isset($this->wp_rewrite->page_structure) )
 			$this->addRoute('page', $this->wp_rewrite->page_structure, ['pagename'=>'[a-zA-Z0-9]{2}[^/].*']);
 	}
 
@@ -246,6 +237,7 @@ if( ($_SERVER['WP_MULTISITE']??false) && !$_config->get('multisite.subdomain_ins
 	foreach (get_sites() as $site)
 	{
 		switch_to_blog( $site->blog_id );
+        flush_rewrite_rules();
 
 		$locale = trim($site->path, '/');
 		new Permastruct($collection, $locale, $controller_name, $_config);

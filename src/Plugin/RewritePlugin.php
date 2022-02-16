@@ -18,14 +18,28 @@ class RewritePlugin {
 	/**
 	 * Add search post type filtered
 	 */
-	public function add(){
+	public function searchRewriteRules($rewrite_rules){
 
-		global $wp_rewrite;
+		global $wp_rewrite, $wp_search_base;
 
 		$search_slug = get_option( 'search_rewrite_slug' );
 
-		if( !empty($search_slug) )
-			$wp_rewrite->search_base = $search_slug;
+        if( empty($wp_search_base) )
+            $wp_search_base = $wp_rewrite->search_base;
+
+        if( isset($wp_rewrite->search_structure) )
+            unset($wp_rewrite->search_structure);
+
+        if( !empty($search_slug) ){
+
+            $wp_rewrite->search_base = $search_slug;
+        }
+        else{
+
+            $wp_rewrite->search_base = $wp_search_base;
+        }
+        
+        return $rewrite_rules;
 	}
 
 	/**
@@ -66,7 +80,7 @@ class RewritePlugin {
 
 		$this->config = $config;
 
-		add_action( 'generate_rewrite_rules', [$this, 'remove'] );
-		add_action( 'init', [$this, 'add']);
-	}
+		add_action('generate_rewrite_rules', [$this, 'remove'] );
+        add_filter('root_rewrite_rules', [$this, 'searchRewriteRules']);
+    }
 }

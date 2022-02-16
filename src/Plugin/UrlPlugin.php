@@ -238,14 +238,17 @@ class UrlPlugin {
 
 		$this->redirectAdmin($config);
 
+        add_action('generate_rewrite_rules', function (){
+
+            if( !is_admin() && (isset($_GET['preview'], $_GET['p']) || isset($_GET['preview'], $_GET['page_id']) || isset($_GET['s']) ) )
+                $this->redirect();
+        });
+
 		add_action('init', function()
 		{
 			// Handle subfolder in url
 			if ( is_feed() )
 				return;
-
-			if( !is_admin() && (isset($_GET['preview'], $_GET['p']) || isset($_GET['preview'], $_GET['page_id']) || isset($_GET['s']) ) )
-				$this->redirect();
 
 			if( apply_filters('wp_make_url_relative', true) ){
 
