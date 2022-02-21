@@ -217,6 +217,9 @@ class ConfigLoader {
             define( 'WP_CONTENT_URL', WP_HOME.'/wp-bundle' );
 
         define('WP_UPLOADS_DIR', realpath(WP_CONTENT_DIR.'/'.UPLOADS));
+        
+        if (!defined('WP_DEFAULT_THEME'))
+            define('WP_DEFAULT_THEME', 'empty');
 
         /**
          * Custom Settings

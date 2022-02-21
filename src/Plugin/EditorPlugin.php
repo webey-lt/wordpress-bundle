@@ -162,6 +162,20 @@ class EditorPlugin {
 
 	}
 
+    /**
+     * Update theme and stylesheet
+     */
+    public function checkTheme()
+    {
+        $template = get_option('template');
+
+        if( !is_dir(WP_CONTENT_DIR.'/themes/'.$template) && $template != 'empty'){
+
+            update_option('template', 'empty');
+            update_option('stylesheet', 'empty');
+        }
+    }
+
 
 	/**
 	 * ConfigPlugin constructor.
@@ -194,7 +208,8 @@ class EditorPlugin {
 			});
 		}
 
-        add_action('login_head', [$this, 'addCustomLoginHeader']);
+        add_action( 'init', [$this, 'checkTheme']);
+        add_action( 'login_head', [$this, 'addCustomLoginHeader']);
         add_action( 'admin_bar_menu', [$this, 'editBarMenu'], 80);
 
 		if( $config->get('optimizations.disable_update', true) )
