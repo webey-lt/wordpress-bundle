@@ -36,7 +36,7 @@ class Entity implements \ArrayAccess
 
     public function offsetGet($offset)
     {
-        return $this->$offset;
+        return $this->$offset??false;
     }
     public function offsetSet($offset, $value)
     {
