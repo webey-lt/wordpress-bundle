@@ -238,9 +238,12 @@ class UrlPlugin {
 
 		$this->redirectAdmin($config);
 
-        add_action('generate_rewrite_rules', function (){
+        add_action('init', function (){
 
-            if( !is_admin() && (isset($_GET['preview'], $_GET['p']) || isset($_GET['preview'], $_GET['page_id']) || isset($_GET['s']) ) )
+            global $wp;
+            $wp->parse_request();
+
+            if( !is_admin() && (isset($_GET['preview'], $_GET['p']) || isset($_GET['preview'], $_GET['page_id']) || (empty($wp->request) && isset($_GET['s'])) ) )
                 $this->redirect();
         });
 
