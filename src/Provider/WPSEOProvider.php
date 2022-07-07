@@ -183,12 +183,6 @@ class WPSEOProvider
                 add_filter( 'wpseo_debug_markers', '__return_false' );
                 add_filter('wpseo_canonical', [$this, 'filterCanonical']);
 
-            add_filter('wp-bundle/make_post_link_relative', function($make){
-
-					global $wp_query;
-					return $make && empty($wp_query->query_vars["sitemap"]) && empty($wp_query->query_vars["yoast-sitemap-xsl"]);
-				});
-
 				add_filter('wpseo_opengraph_url', function($url){
 
 					return trim(home_url('/'), '/').$url;
