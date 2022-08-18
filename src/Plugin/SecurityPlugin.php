@@ -128,8 +128,8 @@ class SecurityPlugin {
 
 		add_action( 'wp_enqueue_scripts', function(){
 
-            wp_deregister_script( 'regenerator-runtime' );
-            wp_deregister_script( 'wp-polyfill' );
+            //wp_deregister_script( 'regenerator-runtime' );
+            //wp_deregister_script( 'wp-polyfill' );
 
             wp_dequeue_style( 'wp-block-library' );
             wp_dequeue_style( 'wp-block-library-theme' );
