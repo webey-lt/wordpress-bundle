@@ -1,5 +1,5 @@
 {
-  "name":"metabolism/wordpress-bundle",
+  "name":"webey/wordpress-bundle",
   "type": "symfony-bundle",
   "version": "2.1.8",
   "description": "Build enterprise solutions with WordPress",
